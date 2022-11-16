@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPP_lab1
+namespace Tracer
 {
     public interface ITracer
     {
         void StartTrace();​
     
-    void StopTrace();​
+        void StopTrace();​
     
-    TraceResult GetTraceResult();
+        TraceResult GetTraceResult();
     }
 }
