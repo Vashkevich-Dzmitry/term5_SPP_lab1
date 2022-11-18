@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Tracer
 {
     [Serializable]
-    public class MethodTraceResult
+    public class MethodInfo
     {
         public string? ClassName { get; internal set; }
 

@@ -9,11 +9,11 @@ namespace Tracer
     [Serializable]
     public class TraceResult
     {
-        public List<ThreadTraceResult> ThreadList;
+        public List<ThreadInfo> ThreadList;
 
         public TraceResult()
         {
-            ThreadList = new List<ThreadTraceResult>();
+            ThreadList = new List<ThreadInfo>();
         }
     }
 }
