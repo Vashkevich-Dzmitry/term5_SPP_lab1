@@ -8,9 +8,8 @@ namespace Tracer
 {
     public interface ITracer
     {
-        void StartTrace();​
-    
-        void StopTrace();​
+        void StartTrace();  
+        void StopTrace();
     
         TraceResult GetTraceResult();
     }

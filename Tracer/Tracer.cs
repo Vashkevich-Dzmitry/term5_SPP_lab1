@@ -91,7 +91,21 @@ namespace Tracer
 
         public void StopTrace()
         {
-            
+            ThreadInfo currentThread;
+            var currentThreadId = Environment.CurrentManagedThreadId;
+            if (_threadsDictionary.ContainsKey(currentThreadId))
+            {
+                currentThread = _threadsDictionary[currentThreadId];
+            }
+            else
+                throw new Exception("Incorrect methods call sequence");
+
+            var tempTime = _stopwatch.ElapsedMilliseconds;
+            currentThread.CurrentNode.Data.Time = tempTime - currentThread.CurrentNode.Data.Time;
+            currentThread.CurrentNode = currentThread.CurrentNode.Parent;
+
+            currentThread.Time = tempTime - currentThread.OldTime + currentThread.Time;
+            currentThread.OldTime = tempTime;
         }
     }
 }
