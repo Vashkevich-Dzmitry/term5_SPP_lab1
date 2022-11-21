@@ -38,7 +38,7 @@ namespace Tracer
 
             var methodName = stackTrace.GetFrames()[1].GetMethod().Name;
             var className = stackTrace.GetFrames()[1].GetMethod().DeclaringType.Name;
-            var path = stackTrace.ToString().Replace("\r\n", "");
+            var path = string.Join("", stackTrace.ToString().Split("\r\n").Skip(1).ToArray());
 
             threadInfo.AddMethod(methodName, className,  path, elapsedMilliseconds);
         }
@@ -49,7 +49,7 @@ namespace Tracer
             {
                 ThreadInfo threadInfo = _traceResult.GetOrAddThreadInfo(Environment.CurrentManagedThreadId);
 
-                threadInfo.EjectMethod(new StackTrace().ToString().Replace("\r\n", ""), _stopwatch.ElapsedMilliseconds);
+                threadInfo.EjectMethod(string.Join("", new StackTrace().ToString().Split("\r\n").Skip(1).ToArray()), _stopwatch.ElapsedMilliseconds);
             } else throw new Exception("Incorrect methods call sequence");
         }
     }
