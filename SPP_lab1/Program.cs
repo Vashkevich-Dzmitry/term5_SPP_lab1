@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tracer;
-using TraceResultSerializer;
 
 namespace SPP_lab1
 {
@@ -25,10 +24,10 @@ namespace SPP_lab1
             var traceResult = tracer.GetTraceResult();
 
 
-            ITraceResultSerializer<TraceResult> serializer = new TraceResultSerializer.JsonSerializer();
+            ITraceResultSerializer serializer = new JsonSerializer();
             var json = serializer.Serialize(traceResult);
 
-            serializer = new TraceResultSerializer.XmlSerializer();
+            serializer = new XmlSerializer();
             var xml = serializer.Serialize(traceResult);
 
 

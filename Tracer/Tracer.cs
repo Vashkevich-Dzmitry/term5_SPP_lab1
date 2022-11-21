@@ -32,7 +32,7 @@ namespace Tracer
         {
             long elapsedMilliseconds = _stopwatch.ElapsedMilliseconds;
 
-            ThreadInfo threadInfo = _traceResult.GetOrAddInfo(Environment.CurrentManagedThreadId);
+            ThreadInfo threadInfo = _traceResult.GetOrAddThreadInfo(Environment.CurrentManagedThreadId);
 
             var stackTrace = new StackTrace();
 
@@ -47,7 +47,7 @@ namespace Tracer
         {
             if (_traceResult.HasThreadWithId(Environment.CurrentManagedThreadId))
             {
-                ThreadInfo threadInfo = _traceResult.GetOrAddInfo(Environment.CurrentManagedThreadId);
+                ThreadInfo threadInfo = _traceResult.GetOrAddThreadInfo(Environment.CurrentManagedThreadId);
 
                 threadInfo.EjectMethod(new StackTrace().ToString().Replace("\r\n", ""), _stopwatch.ElapsedMilliseconds);
             } else throw new Exception("Incorrect methods call sequence");

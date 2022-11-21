@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TraceResultSerializer\TraceResultSerializer.csproj" />
     <ProjectReference Include="..\Tracer\Tracer.csproj" />
   </ItemGroup>
 

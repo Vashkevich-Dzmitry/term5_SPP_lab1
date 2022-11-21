@@ -15,7 +15,7 @@ namespace Tracer
             ThreadsInfo = threadsInfo;
         }
 
-        internal ThreadInfo GetOrAddInfo(int threadId)
+        internal ThreadInfo GetOrAddThreadInfo(int threadId)
         {
             return ThreadsInfo.GetOrAdd(threadId, new ThreadInfo(threadId));
         }
@@ -24,7 +24,7 @@ namespace Tracer
         {
             return ThreadsInfo.ContainsKey(threadId);
         }
-        public ConcurrentDictionary<int, ThreadInfo> GetInfo()
+        public ConcurrentDictionary<int, ThreadInfo> GetThreadsInfo()
         {
             return ThreadsInfo;
         }
