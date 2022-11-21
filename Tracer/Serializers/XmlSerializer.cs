@@ -13,7 +13,7 @@ namespace Tracer
             using (var stringWriter = new StringWriter())
             {
                 xmlSerializer.Serialize(stringWriter, data);
-                return FormatXml(stringWriter.ToString());
+                return FormatXml(stringWriter.ToString().Replace("ArrayOfThread", "root"));
             }
 
         }

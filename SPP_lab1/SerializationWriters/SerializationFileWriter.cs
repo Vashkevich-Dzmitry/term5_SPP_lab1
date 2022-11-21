@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SPP_lab1
+﻿namespace SPP_lab1
 {
     internal class SerializationFileWriter : ISerializationWriter
     {
@@ -15,7 +9,7 @@ namespace SPP_lab1
         }
         public void Write(string value)
         {
-            using (StreamWriter writer = new StreamWriter(Path))
+            using (StreamWriter writer = new(Path))
             {
                 writer.Write(value);
             }

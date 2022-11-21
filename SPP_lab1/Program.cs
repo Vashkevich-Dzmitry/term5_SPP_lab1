@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tracer;
+﻿using Tracer;
 
 namespace SPP_lab1
 {
@@ -58,6 +53,8 @@ namespace SPP_lab1
         {
             _tracer.StartTrace();
 
+            Thread.Sleep(10);
+
             int x = 0;
             for (int i = 0; i < 10000; i++)
             {
@@ -93,6 +90,8 @@ namespace SPP_lab1
             {
                 x = i * i;
             }
+
+            Thread.Sleep(100);
 
             _tracer.StopTrace();
         }

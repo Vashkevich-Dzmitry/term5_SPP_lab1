@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Tracer
 {
     public class MethodInfo
+ 
     {
-        [JsonProperty, XmlAttribute("name")] public string Name { get; set; }
-        [JsonProperty, XmlAttribute("class")] public string ClassName { get; set; }
-        [JsonProperty, XmlAttribute("time")] public long Time { get; set; }
-
-        [JsonProperty, XmlElement("methods")] public List<MethodInfo> ChildMethods { get; set; }
+        [JsonProperty(PropertyName = "name"), XmlAttribute("name")] public string Name { get; set; }
+        [JsonProperty(PropertyName = "time"), XmlAttribute("time")] public long Time { get; set; }
+        [JsonProperty(PropertyName = "class"), XmlAttribute("class")] public string ClassName { get; set; }
+        [JsonProperty(PropertyName = "methods"), XmlElement("method")] public List<MethodInfo> ChildMethods { get; set; }
 
 
         [JsonIgnore] private readonly string _stackTrace;
@@ -23,6 +21,7 @@ namespace Tracer
             ClassName = className;
             _stackTrace = stackTrace;
             _ellapsedMilliseconds = ellapsedMilliseconds;
+            ChildMethods = new List<MethodInfo>();
         }
 
         public MethodInfo() {}
@@ -34,7 +33,7 @@ namespace Tracer
 
         public void CalculateTime(long ellapsedMilliseconds)
         {
-            Time = _ellapsedMilliseconds - ellapsedMilliseconds;
+            Time = ellapsedMilliseconds - _ellapsedMilliseconds;
         }
     }
 }

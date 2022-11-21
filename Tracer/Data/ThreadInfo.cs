@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Tracer
 {
+    [XmlType("thread")]
     public class ThreadInfo
     {
 
-        [DataMember][JsonProperty, XmlAttribute("id")] public int Id { get; set; }
-        [DataMember][JsonProperty, XmlAttribute("time")] public long Time { get; set; }
-        [DataMember][JsonProperty, XmlElement("methods")] public List<MethodInfo> MethodsStack { get; set; }
+        [DataMember][JsonProperty(PropertyName = "id"), XmlAttribute("id")] public int Id { get; set; }
+        [DataMember][JsonProperty(PropertyName = "time"), XmlAttribute("time")] public long Time { get; set; }
+        [DataMember][JsonProperty(PropertyName = "methods"), XmlElement("method")] public List<MethodInfo> MethodsStack { get; set; }
 
         public ThreadInfo() {}
 
