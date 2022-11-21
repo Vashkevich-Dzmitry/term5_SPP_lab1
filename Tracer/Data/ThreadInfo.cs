@@ -1,18 +1,47 @@
-﻿namespace Tracer
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+
+namespace Tracer
 {
-    [Serializable]
     public class ThreadInfo
     {
-        public int Id { get; set; }
-        public long Time { get; set; }
-        internal long OldTime { get; set; }
-        public List<Node<MethodInfo>> MethodsInfo { get; set; }
-        
-        internal Node<MethodInfo>? CurrentNode { get; set; }
 
-        public ThreadInfo()
+        [DataMember][JsonProperty, XmlAttribute("id")] public int Id { get; set; }
+        [DataMember][JsonProperty, XmlAttribute("time")] public long Time { get; set; }
+        [DataMember][JsonProperty, XmlElement("methods")] public List<MethodInfo> MethodsStack { get; set; }
+
+        public ThreadInfo() {}
+
+        public ThreadInfo(int id)
         {
-            MethodsInfo = new List<Node<MethodInfo>>();
+            Id = id;
+            MethodsStack = new List<MethodInfo>();
+        }
+
+        public void AddMethod(string name, string className, string stackTrace, long ellapsedMilliseconds)
+        {
+            MethodsStack.Add(new MethodInfo(name, className, stackTrace, ellapsedMilliseconds));
+        }
+
+        public void EjectMethod(string stackTrace, long ellapsedMilliseconds)
+        {
+            int index = MethodsStack.FindLastIndex(item => item.GetStackTrace() == stackTrace);
+
+            if (index != MethodsStack.Count - 1)
+            {
+                int size = MethodsStack.Count - index - 1;
+                var childMethods = MethodsStack.GetRange(index + 1, size);
+
+                for (var i = 0; i < size; i++)
+                    MethodsStack.RemoveAt(MethodsStack.Count - 1);
+
+                MethodsStack[index].ChildMethods = childMethods;                
+            }
+
+            MethodsStack[index].CalculateTime(ellapsedMilliseconds);
+            Time += MethodsStack[index].Time;
         }
     }
 }

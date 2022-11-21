@@ -11,10 +11,8 @@ namespace Tracer
     public class Tracer : ITracer
     {
         private static readonly Stopwatch _stopwatch = new();
-        private readonly object _locker = new();
 
-        private readonly TraceResult _traceResult;
-        private readonly ConcurrentDictionary<int, ThreadInfo> _threadsDictionary;     
+        private readonly TraceResult _traceResult; 
         static Tracer()
         {
             _stopwatch.Start();
@@ -23,7 +21,6 @@ namespace Tracer
         public Tracer()
         {
             _traceResult = new TraceResult();
-            _threadsDictionary = new ConcurrentDictionary<int, ThreadInfo>();
         }
 
         public TraceResult GetTraceResult()
@@ -33,79 +30,27 @@ namespace Tracer
 
         public void StartTrace()
         {
-            ThreadInfo currentThread;
+            long elapsedMilliseconds = _stopwatch.ElapsedMilliseconds;
 
-            var currentThreadId = Environment.CurrentManagedThreadId;
-            lock (_locker)
-            {
-                if (_threadsDictionary.ContainsKey(currentThreadId))
-                {
-                    currentThread = _threadsDictionary[currentThreadId];
-                }
-                else
-                {
-                    currentThread = new ThreadInfo
-                    {
-                        Id = currentThreadId
-                    };
-                    _threadsDictionary.TryAdd(currentThreadId, currentThread);
-                    _traceResult.ThreadList.Add(currentThread);
-                    currentThread.OldTime = _stopwatch.ElapsedMilliseconds;
-                    currentThread.Time = 0;
-                }
-            }
+            ThreadInfo threadInfo = _traceResult.GetOrAddInfo(Environment.CurrentManagedThreadId);
 
+            var stackTrace = new StackTrace();
 
+            var methodName = stackTrace.GetFrames()[1].GetMethod().Name;
+            var className = stackTrace.GetFrames()[1].GetMethod().DeclaringType.Name;
+            var path = stackTrace.ToString().Replace("\r\n", "");
 
-            StackTrace stackTrace = new();
-            var frame = stackTrace.GetFrame(1);
-            var method = frame.GetMethod();
-
-
-            if (currentThread.CurrentNode == null)
-            {
-                currentThread.CurrentNode = new Node<MethodInfo>(new MethodInfo()
-                {
-                    ClassName = method.DeclaringType.Name,
-                    MethodName = method.Name
-                })
-                {
-                    Parent = null
-                };
-                currentThread.MethodsInfo.Add(currentThread.CurrentNode);
-                currentThread.CurrentNode.Data.Time = _stopwatch.ElapsedMilliseconds;
-            }
-            else
-            {
-                var temp = new Node<MethodInfo>(new MethodInfo()
-                {
-                    ClassName = method.DeclaringType.Name,
-                    MethodName = method.Name,
-                    Time = _stopwatch.ElapsedMilliseconds
-                });
-                currentThread.CurrentNode.Children.Add(temp);
-                temp.Parent = currentThread.CurrentNode;
-                currentThread.CurrentNode = temp;
-            }
+            threadInfo.AddMethod(methodName, className,  path, elapsedMilliseconds);
         }
 
         public void StopTrace()
         {
-            ThreadInfo currentThread;
-            var currentThreadId = Environment.CurrentManagedThreadId;
-            if (_threadsDictionary.ContainsKey(currentThreadId))
+            if (_traceResult.HasThreadWithId(Environment.CurrentManagedThreadId))
             {
-                currentThread = _threadsDictionary[currentThreadId];
-            }
-            else
-                throw new Exception("Incorrect methods call sequence");
+                ThreadInfo threadInfo = _traceResult.GetOrAddInfo(Environment.CurrentManagedThreadId);
 
-            var tempTime = _stopwatch.ElapsedMilliseconds;
-            currentThread.CurrentNode.Data.Time = tempTime - currentThread.CurrentNode.Data.Time;
-            currentThread.CurrentNode = currentThread.CurrentNode.Parent;
-
-            currentThread.Time = tempTime - currentThread.OldTime + currentThread.Time;
-            currentThread.OldTime = tempTime;
+                threadInfo.EjectMethod(new StackTrace().ToString().Replace("\r\n", ""), _stopwatch.ElapsedMilliseconds);
+            } else throw new Exception("Incorrect methods call sequence");
         }
     }
 }
