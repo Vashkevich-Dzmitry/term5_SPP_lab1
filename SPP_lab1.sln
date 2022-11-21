@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPP_lab1", "SPP_lab1\SPP_la
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tracer", "Tracer\Tracer.csproj", "{C2C36437-1DF1-4477-8C64-5FA0D9F9F74C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4965A540-1CA5-4752-81A9-D699904C6B06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C2C36437-1DF1-4477-8C64-5FA0D9F9F74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2C36437-1DF1-4477-8C64-5FA0D9F9F74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2C36437-1DF1-4477-8C64-5FA0D9F9F74C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4965A540-1CA5-4752-81A9-D699904C6B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4965A540-1CA5-4752-81A9-D699904C6B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4965A540-1CA5-4752-81A9-D699904C6B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4965A540-1CA5-4752-81A9-D699904C6B06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
